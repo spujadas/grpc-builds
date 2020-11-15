@@ -1,0 +1,17 @@
+name: Build and release x64 and ARM deb packages
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: check out grpc
+        run: ./01_checkout_grpc.sh
