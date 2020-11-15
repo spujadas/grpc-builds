@@ -10,18 +10,38 @@ The x64 builds are a by-product of the overall build process, which involves cro
 
 The main assets, which can be found in the [Releases](https://github.com/spujadas/grpc-builds/releases) section, are:
 
-- A Debian package of gRPC and Protobuf compilers for x64 Linux (`grpc_*_amd64.deb`), containing binaries and development files, which will be installed in `/usr/local`.
-- A compressed archive of gRPC for x64 Linux (`grpc-*-amd64.tar.gz`), with the same contents as the previous package, and designed to be installed in `/usr/local`.
-- A Debian package of gRPC for ARM Linux (`grpc_*_armhf.deb`), containing binaries and development files, which will be installed in `/usr/local`.
-- A compressed archive of gRPC for ARM Linux (`grpc-*-armhf.tar.gz`), with the same contents as the previous package, and designed to be installed in `/usr/local`.
+- `grpc_*_amd64.deb` — Debian package of gRPC and Protobuf compilers for x64 Linux (), containing binaries and development files, which will be installed in `/usr/local`.
+- `grpc-*-amd64.tar.gz` — Compressed archive of gRPC for x64 Linux, with the same contents as the previous package, and designed to be installed in `/usr/local`.
+- `grpc_*_armhf.deb` — Debian package of gRPC for ARM Linux, containing binaries and development files, which will be installed in `/usr/local`.
+- `grpc-*-armhf.tar.gz` — Compressed archive of gRPC for ARM Linux, with the same contents as the previous package, and designed to be installed in `/usr/local`.
 
 
 
 The following artefacts are also available under Releases:
 
-- A compressed archive of gRPC for ARM Linux (`grpc_sysroot-*-armhf.tar.gz`) containing binaries and development files for cross-compilation purposes. The contents are designed to be installed in `/tmp/raspberrypi_root`. Cross-compilation will require development files for zlib for ARM (see next point).
-- A compressed archive of [zlib](https://github.com/madler/zlib) for ARM Linux (`zlib_sysroot-*-armhf.tar.gz`) containing binaries and development files for cross-compilation purposes. The contents are designed to be installed in `/tmp/raspberrypi_root`.
-- A Debian package (`zlib_*_armhf.deb`) and a compressed archive (`zlib-*-armhf.tar.gz`) of zlib for ARM Linux, containing binaries and development files, to be installed in `/usr/local`. This package shouldn't be needed in general as all Linux distributions have official zlib packages.
+- `grpc_sysroot-*-armhf.tar.gz` — Compressed archive of gRPC for ARM Linux containing binaries and development files for cross-compilation purposes. The contents are designed to be installed in `/tmp/raspberrypi_root`. Cross-compilation will require development files for zlib for ARM (see next point).
+- `zlib_sysroot-*-armhf.tar.gz` — Compressed archive of [zlib](https://github.com/madler/zlib) for ARM Linux containing binaries and development files for cross-compilation purposes. The contents are designed to be installed in `/tmp/raspberrypi_root`.
+- `zlib_*_armhf.deb` and `zlib-*-armhf.tar.gz` — Debian package and compressed archive of zlib for ARM Linux, containing binaries and development files, to be installed in `/usr/local`. *These files are generated as part of the build process, but they shouldn't be needed in general as all Linux distributions have official zlib packages.*
+
+
+
+### Build
+
+The assets and artefacts are automatically built by GitHub Actions, but if you want to build them yourself, for instance to tinker with the build scripts, then you can run the build scripts one after the other, as follows (mind the extra `.` before the scripts that set environment variables):
+
+```
+. ./01_set_env_vars_common_grpc.sh
+./02_checkout_grpc.sh
+. ./03_set_env_vars_zlib.sh
+./04_install_prerequisites.sh
+./05_build_grpc_amd64.sh
+./06_install_grpc_amd64.sh
+./07_build_zlib_armhf.sh
+./08_install_zlib_sysroot.sh
+./09_build_grpc_armhf.sh
+```
+
+The resulting packages will be created in the current directory.
 
 
 

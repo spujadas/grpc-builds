@@ -2,10 +2,11 @@
 
 # check out specified version of grpc
 
-set -ex
+# check that version of grpc to check out is set in env var
+source utils.sh
+check_env_var TAG
 
-TAG_FILENAME=grpc-tag.txt
-TAG=$(head -n 1 $TAG_FILENAME)
+set -ex
 
 # update grpc submodule
 git submodule update --init

@@ -13,5 +13,120 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: set environment variables for common use and gRPC
+        run: . ./01_set_env_vars_common_grpc.sh
+
       - name: check out grpc
-        run: ./01_checkout_grpc.sh
+        run: ./02_checkout_grpc.sh
+
+      - name: set environment variables for zlib
+        run: . ./03_set_env_vars_zlib.sh
+
+      - name: install prerequisites
+        run: ./04_install_prerequisites.sh
+
+      - name: build gRPC for host (x64)
+        run: ./05_build_grpc_amd64.sh
+
+      - name: install gRPC for host (x64)
+        run: ./06_install_grpc_amd64.sh
+
+      - name: build zlib for guest (ARM)
+        run: ./07_build_zlib_armhf.sh
+
+      - name: install zlib in host sysroot for ARM
+        run: ./08_install_zlib_sysroot.sh
+
+      - name: build gRPC for guest (ARM)
+        run: ./09_build_grpc_armhf.sh
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.TAG }}  # replace with github.ref after testing
+          release_name: Release ${{ env.TAG }}  # replace with github.ref after testing
+          draft: false
+          prerelease: false
+
+      - name: Upload GRPC host TGZ package (x64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ${{ github.workspace }}/${{ env.GRPC_HOST_PACKAGE_NAME }}.tar.gz
+          asset_name: ${{ env.GRPC_HOST_PACKAGE_NAME }}.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload GRPC host DEB package (x64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/${{ env.GRPC_HOST_DEBIAN_PACKAGE_NAME }}.tar.gz
+          asset_name: ${{ env.GRPC_HOST_DEBIAN_PACKAGE_NAME }}
+          asset_content_type: application/vnd.debian.binary-package
+
+      - name: Upload GRPC guest TGZ package (ARM)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ${{ github.workspace }}/${{ env.GRPC_GUEST_PACKAGE_NAME }}.tar.gz
+          asset_name: ${{ env.GRPC_GUEST_PACKAGE_NAME }}.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload GRPC guest DEB package (ARM)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/${{ env.GRPC_GUEST_DEBIAN_PACKAGE_NAME }}.tar.gz
+          asset_name: ${{ env.GRPC_GUEST_DEBIAN_PACKAGE_NAME }}
+          asset_content_type: application/vnd.debian.binary-package
+
+      - name: Upload GRPC host sysroot TGZ package for ARM
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/${{ env.GRPC_SYSROOT_PACKAGE_NAME }}.tar.gz
+          asset_name: ${{ env.GRPC_SYSROOT_PACKAGE_NAME }}.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload zlib guest TGZ package (ARM)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ${{ github.workspace }}/${{ env.ZLIB_GUEST_PACKAGE_NAME }}.tar.gz
+          asset_name: ${{ env.ZLIB_GUEST_PACKAGE_NAME }}.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload zlib guest DEB package (ARM)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/${{ env.ZLIB_GUEST_DEBIAN_PACKAGE_NAME }}.tar.gz
+          asset_name: ${{ env.ZLIB_GUEST_DEBIAN_PACKAGE_NAME }}
+          asset_content_type: application/vnd.debian.binary-package
+
+      - name: Upload zlib host sysroot TGZ package for ARM
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/${{ env.ZLIB_SYSROOT_PACKAGE_NAME }}.tar.gz
+          asset_name: ${{ env.ZLIB_SYSROOT_PACKAGE_NAME }}.tar.gz
+          asset_content_type: application/gzip
