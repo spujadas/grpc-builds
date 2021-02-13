@@ -2,7 +2,7 @@
 
 This repository provides packages containing binaries and development files for [gRPC](https://github.com/grpc/grpc) (an open source and high-performance RPC library and framework) and [Protobuf compilers](https://github.com/protocolbuffers/protobuf), for Linux x64 (`amd64`) and ARM (`armhf`) architectures. These packages are built from the official source of gRPC and its dependencies, using GitHub Actions.
 
-This project was created to compile applications on Raspberry Pi that need up-to-date versions of gRPC for Raspberry Pi, avoiding lengthy compilations of gRPC on the Pi.
+This project was created to compile applications on the Raspberry Pi that need up-to-date versions of gRPC, avoiding preliminary lengthy compilations of gRPC on the Pi.
 
 The x64 builds are a by-product of the overall build process, which involves cross-compiling for ARM, which in turn requires gRPC's `protoc` and `grpc_cpp_plugin` binaries to be available on the host (x64) system where the cross-compilation is taking place.
 
@@ -33,9 +33,9 @@ The assets and artefacts are automatically built by GitHub Actions, but if you w
 . ./01_set_env_vars_common_grpc.sh
 ./02_checkout_grpc.sh
 . ./03_set_env_vars_zlib.sh
-./04_install_prerequisites.sh
+./04_install_prerequisites.sh  # requires root permissions
 ./05_build_grpc_amd64.sh
-./06_install_grpc_amd64.sh
+./06_install_grpc_amd64.sh  # or sudo dpkg -i $GRPC_HOST_DEBIAN_PACKAGE_NAME
 ./07_build_zlib_armhf.sh
 ./08_install_zlib_sysroot.sh
 ./09_build_grpc_armhf.sh

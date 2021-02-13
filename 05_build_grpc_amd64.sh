@@ -15,7 +15,6 @@ check_env_var HOST_INSTALL_PREFIX
 set -ex
 
 # create build directory
-
 mkdir -p ${GRPC_HOST_BUILD_DIR}
 pushd ${GRPC_HOST_BUILD_DIR}
 rm -Rf *
@@ -23,6 +22,7 @@ rm -Rf *
 # set up compilation
 cmake \
   -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_SHARED_LIBS=ON \
   -DCMAKE_INSTALL_PREFIX=${HOST_INSTALL_PREFIX} \
   -DgRPC_BUILD_TESTS=OFF \
   -DgRPC_SSL_PROVIDER=package \
@@ -41,7 +41,7 @@ cpack \
   -D CPACK_INSTALL_CMAKE_PROJECTS="$(pwd);grpc;ALL;/" \
   -D CPACK_PACKAGING_INSTALL_PREFIX=${HOST_INSTALL_PREFIX} \
   -D CPACK_DEBIAN_PACKAGE_ARCHITECTURE="amd64" \
-  -D CPACK_DEBIAN_PACKAGE_DEPENDS="zlib1g openssl"
+  -D CPACK_DEBIAN_PACKAGE_DEPENDS="zlib1g, openssl"
 
 # copy DEB and TGZ package to base directory
 cp ${GRPC_HOST_PACKAGE_NAME}.tar.gz ${BASE_DIR}

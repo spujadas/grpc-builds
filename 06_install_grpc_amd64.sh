@@ -4,6 +4,6 @@
 
 set -ex
 
-pushd "build/linux-x64"
+pushd ${GRPC_HOST_BUILD_DIR}
 make install
 popd
