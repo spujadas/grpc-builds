@@ -8,8 +8,8 @@ check_env_var TAG
 
 set -ex
 
-# update grpc submodule
-git submodule update --init
+# clone grpc repo
+git clone https://github.com/grpc/grpc.git
 
 pushd grpc
 

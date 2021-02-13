@@ -44,35 +44,21 @@ jobs:
           echo "GRPC_GUEST_DEBIAN_PACKAGE_NAME=${GRPC_GUEST_DEBIAN_PACKAGE_NAME}" >> $GITHUB_ENV
           cat $GITHUB_ENV
 
-      - name: list env vars
-        run: |
-          echo ${TAG_FILENAME}
-          echo ${TAG}
-          echo ${BASE_DIR}
-          echo ${SYSROOT_PREFIX}
-          echo ${CROSS_COMPILER_ROOT}
-          echo ${TOOLCHAIN_FILE}
-          echo ${GRPC_CPACK_CONFIG_FILE}
-          echo ${GUEST_INSTALL_PREFIX}
-          echo ${HOST_INSTALL_PREFIX}
-          echo ${GRPC_SOURCE_DIR}
-          echo ${GRPC_HOST_BUILD_DIR}
-          echo ${GRPC_GUEST_BUILD_DIR}
-          echo ${CROSS_COMPILER_PACKAGE_FILE}
-          echo ${CROSS_COMPILER_BASE_URL}
-          echo ${CROSS_COMPILER_RELATIVE_URL}
-          echo ${GRPC_PACKAGE_VERSION}
-          echo ${GRPC_HOST_PACKAGE_NAME}
-          echo ${GRPC_HOST_DEBIAN_PACKAGE_NAME}
-          echo ${GRPC_SYSROOT_PACKAGE_NAME}
-          echo ${GRPC_GUEST_PACKAGE_NAME}
-          echo ${GRPC_GUEST_DEBIAN_PACKAGE_NAME}
-
       - name: check out grpc
         run: ./02_checkout_grpc.sh
 
       - name: set environment variables for zlib
-        run: source ./03_set_env_vars_zlib.sh
+        run: |
+          source ./03_set_env_vars_zlib.sh
+          echo "ZLIB_CPACK_CONFIG_FILE=${ZLIB_CPACK_CONFIG_FILE}" >> $GITHUB_ENV
+          echo "ZLIB_SOURCE_DIR=${ZLIB_SOURCE_DIR}" >> $GITHUB_ENV
+          echo "ZLIB_GUEST_BUILD_DIR=${ZLIB_GUEST_BUILD_DIR}" >> $GITHUB_ENV
+          echo "ZLIB_SYSROOT_BUILD_DIR=${ZLIB_SYSROOT_BUILD_DIR}" >> $GITHUB_ENV
+          echo "ZLIB_PACKAGE_VERSION=${ZLIB_PACKAGE_VERSION}" >> $GITHUB_ENV
+          echo "ZLIB_SYSROOT_PACKAGE_NAME=${ZLIB_SYSROOT_PACKAGE_NAME}" >> $GITHUB_ENV
+          echo "ZLIB_GUEST_PACKAGE_NAME=${ZLIB_GUEST_PACKAGE_NAME}" >> $GITHUB_ENV
+          echo "ZLIB_GUEST_DEBIAN_PACKAGE_NAME=${ZLIB_GUEST_DEBIAN_PACKAGE_NAME}" >> $GITHUB_ENV
+          cat $GITHUB_ENV
 
       - name: install prerequisites
         run: ./04_install_prerequisites.sh
