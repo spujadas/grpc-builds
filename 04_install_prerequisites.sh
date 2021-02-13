@@ -10,10 +10,11 @@ check_env_var CROSS_COMPILER_RELATIVE_URL
 set -ex
 
 # install libssl-dev and libz-dev
-apt-get update && apt-get install -y libssl-dev zlib1g-dev
+sudo apt update
+sudo apt install -y libssl-dev zlib1g-dev
 
 # install cURL
-apt-get update && apt-get install -y curl
+sudo apt install -y curl
 
 # install CMake 3.16
 if [ ! -f /usr/bin/cmake ]; then
@@ -31,4 +32,4 @@ fi
 tar -xzf ${CROSS_COMPILER_PACKAGE_FILE} -C ${CROSS_COMPILER_ROOT} --strip-components 1
 
 # install prerequisite build tools and dev packages
-apt-get install make g++
+sudo apt install make g++

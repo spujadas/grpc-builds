@@ -5,5 +5,5 @@
 set -ex
 
 pushd ${GRPC_HOST_BUILD_DIR}
-make install
+sudo make install
 popd
