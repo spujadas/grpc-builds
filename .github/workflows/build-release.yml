@@ -12,15 +12,67 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: fix permissions
+        run: chmod +x *.sh
 
       - name: set environment variables for common use and gRPC
-        run: . ./01_set_env_vars_common_grpc.sh
+        run: |
+          source ./01_set_env_vars_common_grpc.sh
+          echo "TAG_FILENAME=${TAG_FILENAME}" >> $GITHUB_ENV
+          echo "TAG=${TAG}" >> $GITHUB_ENV
+          echo "BASE_DIR=${BASE_DIR}" >> $GITHUB_ENV
+          echo "SYSROOT_PREFIX=${SYSROOT_PREFIX}" >> $GITHUB_ENV
+          echo "CROSS_COMPILER_ROOT=${CROSS_COMPILER_ROOT}" >> $GITHUB_ENV
+          echo "TOOLCHAIN_FILE=${TOOLCHAIN_FILE}" >> $GITHUB_ENV
+          echo "GRPC_CPACK_CONFIG_FILE=${GRPC_CPACK_CONFIG_FILE}" >> $GITHUB_ENV
+          echo "GUEST_INSTALL_PREFIX=${GUEST_INSTALL_PREFIX}" >> $GITHUB_ENV
+          echo "HOST_INSTALL_PREFIX=${HOST_INSTALL_PREFIX}" >> $GITHUB_ENV
+          echo "GRPC_SOURCE_DIR=${GRPC_SOURCE_DIR}" >> $GITHUB_ENV
+          echo "GRPC_HOST_BUILD_DIR=${GRPC_HOST_BUILD_DIR}" >> $GITHUB_ENV
+          echo "GRPC_GUEST_BUILD_DIR=${GRPC_GUEST_BUILD_DIR}" >> $GITHUB_ENV
+          echo "CROSS_COMPILER_PACKAGE_FILE=${CROSS_COMPILER_PACKAGE_FILE}" >> $GITHUB_ENV
+          echo "CROSS_COMPILER_BASE_URL=${CROSS_COMPILER_BASE_URL}" >> $GITHUB_ENV
+          echo "CROSS_COMPILER_RELATIVE_URL=${CROSS_COMPILER_RELATIVE_URL}" >> $GITHUB_ENV
+          echo "GRPC_PACKAGE_VERSION=${GRPC_PACKAGE_VERSION}" >> $GITHUB_ENV
+          echo "GRPC_HOST_PACKAGE_NAME=${GRPC_HOST_PACKAGE_NAME}" >> $GITHUB_ENV
+          echo "GRPC_HOST_DEBIAN_PACKAGE_NAME=${GRPC_HOST_DEBIAN_PACKAGE_NAME}" >> $GITHUB_ENV
+          echo "GRPC_SYSROOT_PACKAGE_NAME=${GRPC_SYSROOT_PACKAGE_NAME}" >> $GITHUB_ENV
+          echo "GRPC_GUEST_PACKAGE_NAME=${GRPC_GUEST_PACKAGE_NAME}" >> $GITHUB_ENV
+          echo "GRPC_GUEST_DEBIAN_PACKAGE_NAME=${GRPC_GUEST_DEBIAN_PACKAGE_NAME}" >> $GITHUB_ENV
+          cat $GITHUB_ENV
+
+      - name: list env vars
+        run: |
+          echo ${TAG_FILENAME}
+          echo ${TAG}
+          echo ${BASE_DIR}
+          echo ${SYSROOT_PREFIX}
+          echo ${CROSS_COMPILER_ROOT}
+          echo ${TOOLCHAIN_FILE}
+          echo ${GRPC_CPACK_CONFIG_FILE}
+          echo ${GUEST_INSTALL_PREFIX}
+          echo ${HOST_INSTALL_PREFIX}
+          echo ${GRPC_SOURCE_DIR}
+          echo ${GRPC_HOST_BUILD_DIR}
+          echo ${GRPC_GUEST_BUILD_DIR}
+          echo ${CROSS_COMPILER_PACKAGE_FILE}
+          echo ${CROSS_COMPILER_BASE_URL}
+          echo ${CROSS_COMPILER_RELATIVE_URL}
+          echo ${GRPC_PACKAGE_VERSION}
+          echo ${GRPC_HOST_PACKAGE_NAME}
+          echo ${GRPC_HOST_DEBIAN_PACKAGE_NAME}
+          echo ${GRPC_SYSROOT_PACKAGE_NAME}
+          echo ${GRPC_GUEST_PACKAGE_NAME}
+          echo ${GRPC_GUEST_DEBIAN_PACKAGE_NAME}
 
       - name: check out grpc
         run: ./02_checkout_grpc.sh
 
       - name: set environment variables for zlib
-        run: . ./03_set_env_vars_zlib.sh
+        run: source ./03_set_env_vars_zlib.sh
 
       - name: install prerequisites
         run: ./04_install_prerequisites.sh

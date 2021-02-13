@@ -33,7 +33,7 @@ The assets and artefacts are automatically built by GitHub Actions, but if you w
 . ./01_set_env_vars_common_grpc.sh
 ./02_checkout_grpc.sh
 . ./03_set_env_vars_zlib.sh
-./04_install_prerequisites.sh  # requires root permissions
+./04_install_prerequisites.sh  # requires root permissions (e.g. sudo -E 04_install_prerequisites.sh)
 ./05_build_grpc_amd64.sh
 ./06_install_grpc_amd64.sh  # or sudo dpkg -i $GRPC_HOST_DEBIAN_PACKAGE_NAME
 ./07_build_zlib_armhf.sh
