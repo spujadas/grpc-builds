@@ -6,4 +6,8 @@ set -ex
 
 pushd ${GRPC_HOST_BUILD_DIR}
 sudo make install
+
+# update path to libs and refresh
+sudo ldconfig -n ${HOST_INSTALL_PREFIX}/lib
+sudo ldconfig
 popd

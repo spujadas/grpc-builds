@@ -84,8 +84,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.TAG }}  # replace with github.ref after testing
-          release_name: Release ${{ env.TAG }}  # replace with github.ref after testing
+          tag_name: ${{ github.ref }}  # use env.TAG for testing
+          release_name: Release ${{ github.ref }}  # use env.TAG for testing
           draft: false
           prerelease: false
 
@@ -105,7 +105,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/${{ env.GRPC_HOST_DEBIAN_PACKAGE_NAME }}.tar.gz
+          asset_path: ${{ github.workspace }}/${{ env.GRPC_HOST_DEBIAN_PACKAGE_NAME }}
           asset_name: ${{ env.GRPC_HOST_DEBIAN_PACKAGE_NAME }}
           asset_content_type: application/vnd.debian.binary-package
 
@@ -125,7 +125,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/${{ env.GRPC_GUEST_DEBIAN_PACKAGE_NAME }}.tar.gz
+          asset_path: ${{ github.workspace }}/${{ env.GRPC_GUEST_DEBIAN_PACKAGE_NAME }}
           asset_name: ${{ env.GRPC_GUEST_DEBIAN_PACKAGE_NAME }}
           asset_content_type: application/vnd.debian.binary-package
 
@@ -155,7 +155,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/${{ env.ZLIB_GUEST_DEBIAN_PACKAGE_NAME }}.tar.gz
+          asset_path: ${{ github.workspace }}/${{ env.ZLIB_GUEST_DEBIAN_PACKAGE_NAME }}
           asset_name: ${{ env.ZLIB_GUEST_DEBIAN_PACKAGE_NAME }}
           asset_content_type: application/vnd.debian.binary-package
 
