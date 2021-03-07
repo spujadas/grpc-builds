@@ -40,9 +40,6 @@ cmake \
   ${GRPC_SOURCE_DIR}
 
 
-# set directories where libraries should be searched for
-export LD_LIBRARY_PATH=${CROSS_COMPILER_ROOT}/lib:$LD_LIBRARY_PATH
-
 # compile and preinstall for packaging
 make -j8 preinstall
 
@@ -60,7 +57,7 @@ cp ${GRPC_SYSROOT_PACKAGE_NAME}.tar.gz ${BASE_DIR}
 
 # set up cross-compilation for guest installation
 cmake \
-  -DCMAKE_TOOLCHAIN_FILE=${BASE_DIR}/rpi-toolchain.cmake \
+  -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE} \
   -DCMAKE_BUILD_TYPE=Release \
   -DBUILD_SHARED_LIBS=ON \
   -DCMAKE_INSTALL_PREFIX=${GUEST_INSTALL_PREFIX} \

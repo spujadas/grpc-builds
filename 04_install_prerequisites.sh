@@ -4,8 +4,8 @@
 
 # check required environment variables
 source utils.sh
-check_env_var CROSS_COMPILER_ROOT
-check_env_var CROSS_COMPILER_RELATIVE_URL
+check_env_var CROSS_COMPILER_INSTALL_DIR
+check_env_var CROSS_COMPILER_GIT_REPOSITORY
 
 set -ex
 
@@ -23,13 +23,7 @@ if [ ! -f /usr/bin/cmake ]; then
 fi
 
 # install cross-compiler for Raspberry Pi
-# (https://github.com/abhiTronix/raspberry-pi-cross-compilers)
-mkdir -p ${CROSS_COMPILER_ROOT}
-
-if [ ! -f ${CROSS_COMPILER_PACKAGE_FILE} ]; then
-    curl -L -o ${CROSS_COMPILER_PACKAGE_FILE} ${CROSS_COMPILER_BASE_URL}/${CROSS_COMPILER_RELATIVE_URL}
-fi
-tar -xzf ${CROSS_COMPILER_PACKAGE_FILE} -C ${CROSS_COMPILER_ROOT} --strip-components 1
+git clone ${CROSS_COMPILER_GIT_REPOSITORY} ${CROSS_COMPILER_INSTALL_DIR}
 
 # install prerequisite build tools and dev packages
 sudo apt install make g++

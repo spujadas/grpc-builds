@@ -7,7 +7,8 @@ export TAG=$(head -n 1 $TAG_FILENAME)
 # directories and files
 export BASE_DIR=$(pwd)
 export SYSROOT_PREFIX=/tmp/raspberrypi_root
-export CROSS_COMPILER_ROOT=/opt/cross-pi-gcc-6.3.0-0
+export CROSS_COMPILER_INSTALL_DIR=${BASE_DIR}/raspberry-tools
+export CROSS_COMPILER_ROOT=${CROSS_COMPILER_INSTALL_DIR}/arm-bcm2708/arm-linux-gnueabihf
 export TOOLCHAIN_FILE=${BASE_DIR}/rpi-toolchain.cmake
 export GRPC_CPACK_CONFIG_FILE=${BASE_DIR}/CPackConfig-grpc.cmake
 
@@ -19,9 +20,7 @@ export GRPC_HOST_BUILD_DIR=${BASE_DIR}/build/linux-x64
 export GRPC_GUEST_BUILD_DIR=${BASE_DIR}/build/rpi-arm32v6/grpc
 
 # URLs
-export CROSS_COMPILER_PACKAGE_FILE=cross-gcc-6.3.0-pi_0-1.tar.gz
-export CROSS_COMPILER_BASE_URL=https://sourceforge.net/projects/raspberry-pi-cross-compilers/files/Raspberry%20Pi%20GCC%20Cross-Compiler%20Toolchains
-export CROSS_COMPILER_RELATIVE_URL=Stretch/GCC%206.3.0/Raspberry%20Pi%201%2C%20Zero/${CROSS_COMPILER_PACKAGE_FILE}/download
+export CROSS_COMPILER_GIT_REPOSITORY=https://github.com/raspberrypi/tools.git
 
 # gRPC package version and names
 export GRPC_PACKAGE_VERSION=${TAG#v}
