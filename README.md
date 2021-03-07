@@ -45,6 +45,47 @@ The resulting packages will be created in the current directory.
 
 
 
+### Use
+
+The shared libraries for ARM Linux have been compiled using [Raspberry Pi’s official cross-compiler](https://github.com/raspberrypi/tools), which includes GCC version 4.9.3.
+
+*Note – Cross-compiling using [abhiTronix’s cross-compiler](https://github.com/abhiTronix/raspberry-pi-cross-compilers/) with GCC version 6.3.0 was attempted, and [successfully generated static versions](https://github.com/spujadas/grpc-builds/commit/e9ccaf115aa6817ae0ca797885ee3882ed837628) of the GRPC libraries, but [failed to generate dynamic libraries](https://github.com/spujadas/grpc-builds/commit/f18bb7dd381ed253b2ade87eb530e54a7b391009).* 
+
+This appears to mean that programs must be compiled against the shared libraries using a similar version of GCC (tested as working with version 4.9.4, tested as failing with version 8.3.0).
+
+To install an additional version of gcc/g++ on your Pi and activate it, follow the instructions below.
+
+```
+$ gcc --version | grep gcc
+gcc (Raspbian 8.3.0-6+rpi1) 8.3.0
+
+$ sudo apt-get install gcc-4.9 g++-4.9
+
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 40 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
+update-alternatives: using /usr/bin/gcc-4.9 to provide /usr/bin/gcc (gcc) in auto mode
+
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+
+$ sudo update-alternatives --config gcc
+There are 2 choices for the alternative gcc (providing /usr/bin/gcc).
+
+  Selection    Path              Priority   Status
+------------------------------------------------------------
+
+* 0            /usr/bin/gcc-8     60        auto mode
+  1            /usr/bin/gcc-4.9   40        manual mode
+  2            /usr/bin/gcc-8     60        manual mode
+
+Press <enter> to keep the current choice[*], or type selection number:1
+
+$ gcc --version | grep gcc
+gcc (Raspbian 4.9.4-2+rpi1+b19) 4.9.4
+```
+
+Once you have finished compiling your program against the GRPC shared libraries, to revert to the default GCC compilers, run `sudo update-alternatives --config gcc` and select the default version.
+
+
+
 ### Alternatives
 
 Your x64 or ARM Linux distribution may have official packages of gRPC binaries, development files, and dependencies, e.g. for Ubuntu: `libgrpc6`, `libgrpc++1`, `libgrpc-dev`, `libgrpc++-dev`, `protobuf-compiler` (provides `protoc`), `protobuf-compiler-grpc` (provides `grpc_*_plugin`).
